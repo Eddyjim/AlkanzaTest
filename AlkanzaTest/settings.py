@@ -79,7 +79,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-    #'djongo': {
+    #jongo': {
     #    'ENGINE': 'djongo',
     #    'NAME': 'alkanza',
     #}
@@ -117,6 +117,9 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+# Google api key
+GOOGLE_API_KEY = 'AIzaSyAMoqOZ6XnsS4nyY5wppef2dNK37TRE2cE'
 
 
 # Static files (CSS, JavaScript, Images)

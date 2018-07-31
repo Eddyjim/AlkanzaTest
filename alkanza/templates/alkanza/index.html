@@ -6,27 +6,11 @@
 <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
 
 <script>
+  {% load static %}
   var map;
   var points = [];
   var singleMarker;
-  var image = {
-          url: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
-          size: new google.maps.Size(20, 32),
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(0, 32)
-        };
-  var image2 = {
-          url: 'http://photosinbox.com/wp-content/uploads/2013/04/flag-pointer.jpg',
-          size: new google.maps.Size(20, 32),
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(0, 32)
-        };
-  var image3 = {
-          url: 'https://openclipart.org/download/256528/Green-Flag.svg',
-          size: new google.maps.Size(20, 32),
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(0, 32)
-        };
+
 
   function initialize() {
     var dir = { lat: 41.879535, lng: -87.624333 };
@@ -41,12 +25,12 @@
   }
 
   function addMarker(location, map) {
-    marker = new google.maps.Marker({
+    var marker = new google.maps.Marker({
       position: location,
       map: map
     });
-    singleMarker = marker;
-    google.maps.event.addListener(marker,'click', function(event){
+
+      google.maps.event.addListener(marker,'click', function(event){
       marker.setMap(null);
     });
   }
@@ -67,6 +51,7 @@ pointByID[{{point.id}}] = {
 
 };
 {% endfor %}
+
 $(document).ready(function () {
     function activatePoints() {
         $('.point').each(function () {
@@ -103,10 +88,11 @@ function update(){
 
 function calcular(){
 
+
 };
 
 function guardar(){
-  
+
 };
 
 </script>
@@ -126,27 +112,7 @@ function guardar(){
   <div>
     <input type="text" name="evaluationName"></li>
   </div>
-</br>
+    </br>
   <div id=map></div>
-  <div>
-    <div>
-      <li>
-        <span>Nombre: </span>
-        <input type="text" name="name"></li>
-      <li>
-        <span>Tipo: </span>
-       <select id='pointType'>
-        {% for type in types %}
-            <option value={{ type.id }} >{{type.name}}</option>
-        {% endfor %}
-      </select>
-      </li>
-    </div>
-      <li>
-        <button onclick="update()">Cambiar</button>
-        <button onclick="calcular()">Calcular</button>
-        <button onclick="guardar()">Guardar</button>
-      </li>
-  </div>
 </body>
 </html>

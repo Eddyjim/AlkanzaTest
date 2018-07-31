@@ -4,13 +4,13 @@ from django.db import models
 
 class Evaluation(models.Model):
     date = models.DateTimeField('date published')
-    name = models.CharField(max_length=100,default='Evaluation')
-
-class PointType(models.Model):
-    name = models.CharField(max_length=20,default='Tipo')
+    radius = models.IntegerField()
+    latitude = models.CharField(max_length=500)
+    longitude = models.CharField(max_length=500)
 
 class Point(models.Model):
     latitude = models.CharField(max_length=500)
     longitude = models.CharField(max_length=500)
-    type = models.ForeignKey(PointType, on_delete=models.CASCADE)
+    distance = models.IntegerField()
+    balanced = models.BooleanField(default=False)
     evaluation = models.ForeignKey(Evaluation, on_delete=models.CASCADE)

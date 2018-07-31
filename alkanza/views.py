@@ -3,15 +3,13 @@ from django.http import HttpResponse
 from django.template import loader
 from django.http import JsonResponse
 
-from .models import Evaluation, PointType
+from .models import Evaluation
 
 def index(request):
     evaluations = Evaluation.objects.order_by('-date')
-    types = PointType.objects.all()
     template = loader.get_template('alkanza/index.html')
     context = {
         'evaluations': evaluations,
-        'types': types,
     }
     return HttpResponse(template.render(context, request))
 def evaluation(request,evaluation_id):
