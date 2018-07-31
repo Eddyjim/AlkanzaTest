@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script>
+var map;
+function initialize() {
+    map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 5,
+        center: new google.maps.LatLng(41.879535, -87.624333),
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+}
+</script>
+
+<script>
+var marker;
+var pointByID = {};
+{% for point in points %}
+pointByID[{{point.point_id}}] = {
+    name: "{{point.name}}",
+    lat: {{point.latitude}},
+    lng: {{point.longitude}}
+};
+{% endfor %}
+$(document).ready(function () {
+    function activatePoints() {
+        // Add waypoint click handler
+        $('.waypoint').each(function () {
+            $(this).click(function() {
+                var point = pointByID[this.id];
+                var center = new google.maps.LatLng(point.latitude, point.longitude);
+                if (marker) marker.setMap();
+                marker = new google.maps.Marker({map: map, position: center});
+                map.panTo(center);
+            }).hover(
+                function () {this.className = this.className.replace('OFF', 'ON');},
+                function () {this.className = this.className.replace('ON', 'OFF');}
+            );
+        });
+    }
+    activatePoints();
+});
+</script>
+<style>
+    body {font-family: sans-serif}
+    #map {width: 500px; height: 300px}
+</style>
+</head>
+<body onload='initialize()'>
+    <div id=map></div>
+</body>
+</html>
