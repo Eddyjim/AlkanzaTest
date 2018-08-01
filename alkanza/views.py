@@ -2,6 +2,7 @@
 from django.http import HttpResponse
 from django.template import loader
 from django.http import JsonResponse
+from .evaluation import Evaluator
 
 from .models import Evaluation
 
@@ -23,10 +24,10 @@ def evaluation(request,evaluation_id):
         raise Http404("Evaluation non-existent")
     return HttpResponse(template.render(context, request))
 
-def saveEvaluation(request):
-    points = request.GET.get('points', None)
-    evaluationName = request.GET.get('name', None)
-    data = {
-        'is_taken': User.objects.filter(username__iexact=username).exists()
-    }
-    return JsonResponse(data)
+def evaluate(request):
+    if request.method == 'POST':
+        eval = request.POST
+        evaluation = Evaluation(eval['radius'],eval['latitude'],eval['longitude'])
+        evaluation.put()
+        points = Evaluator.findNearPoints(evaluation)
+        return JsonResponse(points)

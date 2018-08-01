@@ -1,107 +1,6 @@
-<!doctype html>
-<html>
-<head>
-<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-<script src="http://maps.googleapis.com/maps/api/js"></script>
-<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+{%extends 'base.html'%}
 
-<script>
-  {% load static %}
-  var map;
-  var points = [];
-  var singleMarker;
-
-
-  function initialize() {
-    var dir = { lat: 41.879535, lng: -87.624333 };
-    map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 15,
-      center: dir
-    });
-
-    google.maps.event.addListener(map,'click', function(event) {
-      addMarker(event.latLng, map);
-    });
-  }
-
-  function addMarker(location, map) {
-    var marker = new google.maps.Marker({
-      position: location,
-      map: map
-    });
-
-      google.maps.event.addListener(marker,'click', function(event){
-      marker.setMap(null);
-    });
-  }
-
-  google.maps.event.addDomListener(window, 'load', initialize);
-</script>
-
-
-<script>
-var marker;
-var pointByID = {};
-{% for point in points %}
-pointByID[{{point.id}}] = {
-    name: "{{point.name}}",
-    lat: {{point.latitude}},
-    lng: {{point.longitude}}
-    type: {{point.type}}
-
-};
-{% endfor %}
-
-$(document).ready(function () {
-    function activatePoints() {
-        $('.point').each(function () {
-            $(this).click(function() {
-                var point = pointByID[this.id];
-                var center = new google.maps.LatLng(point.lat, point.lng);
-                if (marker) marker.setMap();
-                marker = new google.maps.Marker({map: map, position: center});
-                map.panTo(center);
-            }).hover(
-                function () {this.className = this.className.replace('OFF', 'ON');},
-                function () {this.className = this.className.replace('ON', 'OFF');}
-            );
-        });
-    }
-    activatePoints();
-});
-
-
-function update(){
-  switch($("#pointType").val()){
-    case "1":
-      singleMarker.setIcon(image);
-      break;
-    case "2":
-      singleMarker.setIcon(image2);
-      break;
-    case "3":
-      singleMarker.setIcon(image3);
-      break;
-  }
-  singleMarker.setTitle($("#name").val());
-};
-
-function calcular(){
-
-
-};
-
-function guardar(){
-
-};
-
-</script>
-<style>
-    body {font-family: sans-serif}
-    #map {width: 500px; height: 300px}
-</style>
-</head>
-<body onload='initialize()'>
+{%block container%}
   <div id=div.eva>
     <select name="options">
     {% for evaluation in evaluations %}
@@ -114,5 +13,6 @@ function guardar(){
   </div>
     </br>
   <div id=map></div>
-</body>
-</html>
+  <button id="evaluate" type="submit" formaction="/evaluate">Evaluate</button>
+
+{%endblock%}
