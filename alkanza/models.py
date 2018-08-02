@@ -8,11 +8,13 @@ class Evaluation(models.Model):
     radius = models.IntegerField()
     latitude = models.CharField(max_length=500)
     longitude = models.CharField(max_length=500)
-    def __init__(self, radius,latitude,longitude):
+    result = models.IntegerField()
+    def __init__(self, radius,latitude,longitude,result):
         self.date = datetime.datetime.now()
         self.radius = radius
         self.latitude = latitude
         self.longitude = longitude
+        self.result = result
 
 class Point(models.Model):
     latitude = models.CharField(max_length=500)

@@ -46,6 +46,9 @@ $(function(){
     });
   }
 
+  function getDistance(pointA, pointB){
+    return google.maps.geometry.spherical.computeDistanceBetween(pointA,pointB);
+  }
 /*
 var marker;
 var pointByID = {};
