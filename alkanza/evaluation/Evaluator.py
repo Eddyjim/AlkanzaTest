@@ -7,9 +7,8 @@ class Evaluator:
     endpointDistance = 'http://maps.google.com/maps/api/js?sensor=false&libraries=geometry?'
     type = 'hospital'
 
-    def findNearPoints(lat, lng):
-        location = evaluation.latitude+','+evaluation.longitude
-        radius = evaluation.radius
+    def findNearPoints(lat, lng, radius):
+        location = str(lat)+','+str(lng)
         key = getattr(settings, "GOOGLE_API_KEY", None)
         requestParam = 'location={}&radius={}&type={}&key={}'.format(location,
                                                                       radius,
@@ -17,7 +16,7 @@ class Evaluator:
                                                                       key)
         response = urlopen(endpointSearch+requestParam).read()
 
-    
+
     def calculateCoeficient(distances):
         # This method is a dinamic program to this recurrent function that calculates
         # the disbalanced coeficient:

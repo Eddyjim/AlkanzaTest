@@ -24,10 +24,20 @@ def evaluation(request,evaluation_id):
         raise Http404("Evaluation non-existent")
     return HttpResponse(template.render(context, request))
 
-def evaluate(request):
+def evaluate (request):
+
     if request.method == 'POST':
         eval = request.POST
-        evaluation = Evaluation(eval['radius'],eval['latitude'],eval['longitude'])
-        evaluation.put()
-        points = Evaluator.findNearPoints(evaluation)
-        return JsonResponse(points)
+        points = Evaluator.findNearPoints(eval['latitude'],eval['longitude'],eval['radius'])
+
+        #evaluation = Evaluation(eval['radius'],eval['latitude'],eval['longitude'])
+        #evaluation.put()
+        #
+        return HttpResponse('exito')
+
+def calculate(request):
+    if request.method == 'POST':
+        eval = request.POST
+        codeficient = Evaluator.calculateCoeficient(eval)
+
+    return HttpResponse('codeficient')

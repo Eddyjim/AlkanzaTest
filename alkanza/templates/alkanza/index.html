@@ -8,11 +8,18 @@
     {% endfor %}
     </select>
   </div>
-  <div>
-    <input type="text" name="evaluationName"></li>
-  </div>
+
     </br>
   <div id=map></div>
-  <button id="evaluate" type="submit" formaction="/evaluate">Evaluate</button>
-
+  <br>
+  <div>
+    <span>Radius: </span>
+    <span><input id='radius' type="text" name="radius"></span>
+  </div>
+  <br>
+  <button id="evaluate" type="button" >Evaluate</button>
+  {%csrf_token%}
+<script>
+var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+</script>
 {%endblock%}

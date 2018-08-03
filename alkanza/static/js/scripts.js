@@ -1,4 +1,7 @@
 $(function(){
+
+  var loc;
+
   if(navigator.geolocation){
     navigator.geolocation.getCurrentPosition(getCords,getError);
   }else{
@@ -35,10 +38,11 @@ $(function(){
   }
 
   function addMarker(location, map) {
+    loc = location;
     var marker = new google.maps.Marker({
       position: location,
       map: map,
-      dragable: true
+      draggable: true
     });
 
     google.maps.event.addListener(marker,'click', function(event){
@@ -49,6 +53,24 @@ $(function(){
   function getDistance(pointA, pointB){
     return google.maps.geometry.spherical.computeDistanceBetween(pointA,pointB);
   }
+
+  $("#evaluate").on('click',function(){
+    alert(loc.lat());
+    $.ajax({
+      type: 'POST',
+      url: 'evaluate',
+      data:{
+        latitude: loc.lat(),
+        longitude: loc.lng(),
+        radius: $("#radius").val()
+      },success: function(response){
+        alert(response);
+      }, error: function(response){
+        alert("Something went wrong!: "+response["status"]);
+      }
+    });
+  });
+
 /*
 var marker;
 var pointByID = {};
