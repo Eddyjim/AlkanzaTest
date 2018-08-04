@@ -124,5 +124,6 @@ GOOGLE_API_KEY = 'AIzaSyA5kPd6Fg80h7ork48MOVC2JHI8_CA9lU0'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
-
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
