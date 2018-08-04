@@ -4,6 +4,7 @@ from django.template import loader
 from .evaluation import Evaluator
 from django.http import JsonResponse
 from .models import Point, Evaluation
+from datetime import datetime
 import json
 
 
@@ -29,8 +30,6 @@ def evaluate(request):
     if request.method == 'POST':
         eval = request.POST
         points = Evaluator.findNearPoints(eval.get('latitude'),eval.get('longitude'),eval.get('radius'))
-        #evaluation = Evaluation(eval['radius'],eval['latitude'],eval['longitude'])
-        #evaluation.put()
 
         return JsonResponse(points,safe=False)
     else:
@@ -38,19 +37,20 @@ def evaluate(request):
 
 def calculate(request):
     if request.method == 'POST':
-        req =  json.dumps(request.POST)
-        
+        req =  request.POST
+        print (req)
+        points = json.loads(req.get('points'))
+        print (points)
         distances = [];
-        #points = req['points'];
-        for i in req['points']:
+        for i in points:
             distances.append(i.get('distance'))
 
         #print (points)
-        codeficient = Evaluator.calculateCoeficient(req)
-        eval = Evaluation(req.get('radius'),req.get('pivot').get('lat'),req.get('pivot').get('lng'),codeficient)
+        coeficient = Evaluator.calculateCoeficient(distances)
+        eval = Evaluation.objects.create(date=datetime.now(),radius=req.get('radius'),latitude=req.get('lat'),longitude=req.get('lng'),result=coeficient)
         eval.save();
         for p in points:
-            point = Point(p.get('latitude'),p.get('longitude'),p.get('name'),p.get('distance'),eval)
+            point = Point.objects.create(latitude=str(p.get('latitude')),longitude=str(p.get('longitude')),name=p.get('name'),distance=p.get('distance'),evaluation=eval)
             point.save()
 
-    return JsonResponse({'codeficient': codeficient},safe=False)
+    return JsonResponse({'coeficient': coeficient },safe=False)

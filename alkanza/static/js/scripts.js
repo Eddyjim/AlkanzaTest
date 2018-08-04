@@ -95,17 +95,22 @@ $(function(){
           addMarker(pointTmp,map, obj.icon);
           var distance = getDistance(loc, pointTmp);
 
-          json += '{ lat : '+ obj.lat + " , ";
-          json += 'lng : '+ obj.lng + " , ";
-          json += "name : " + obj.name + " , ";
-          json += 'distance : ' + distance +" },"
+          json += '{ "lat" : '+ obj.lat + " , ";
+          json += ' "lng" : '+ obj.lng + " , ";
+          json += '"name" : ""' + obj.name + '" , ';
+          json += '"distance" : ' + distance +" },"
         });
         json = json.substring(0, json.length-1);
         json += "]";
 
+        if(json == ']'){
+          json = '[{"lat" : 45 , "lng" : 45, "name" : "test", "distance": 4},{"lat" : 85 , "lng" : 25, "name" : "test", "distance": 6}]';
+        }
+
+
         console.log(json);
-        var points = JSON.parse('[{"lat" : "45" , "lng" : "45", "name" : "test", "distance": 4},{"lat" : 85 , "lng" : 25, "name" : "test", "distance": 6}]')<
-        //var points = JSON.parse(json);
+        //var points = JSON.parse('');
+        var points = JSON.parse(json);
         console.log(points);
 
         calculate (loc,points);
@@ -145,15 +150,13 @@ $(function(){
       type: 'POST',
       url: 'calculate',
       data:{
-        pivot: {
-          lat: loc.lat(),
-          lng: loc.lng()
-        },
+        lat: loc.lat(),
+        lng: loc.lng(),
         radius: $("#radius").val(),
-          points: points
+        points: JSON.stringify(points )
       },
       success: function(response){
-        $("#coeficient").val() = response.cofeficient;
+        $("#coeficient").val(response.coeficient);
       }, error: function(response){
         alert("Something went wrong!: "+response["status"]);
       }

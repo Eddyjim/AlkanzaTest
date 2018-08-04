@@ -54,8 +54,9 @@ def calculateCoeficient(distances):
                 for j in laux:
                     ls.append(j+i)
                     ls.append(abs(j-i))
-        ls.append(abs(temp-i))
-    laux = ls
-    tempSum = tempSum+i
-    coeficient = min(laux)
+                    ls.append(abs(temp-i))
+
+            laux = ls
+            tempSum = tempSum+i
+            coeficient = min(laux)
     return coeficient
