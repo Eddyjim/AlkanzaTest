@@ -19,6 +19,12 @@ class Evaluation(models.Model):
 class Point(models.Model):
     latitude = models.CharField(max_length=500)
     longitude = models.CharField(max_length=500)
+    name = models.CharField(max_length=500)
     distance = models.IntegerField()
-    balanced = models.BooleanField(default=False)
     evaluation = models.ForeignKey(Evaluation, on_delete=models.CASCADE)
+    def __init__(self, latitude,longitude,name,distance,evaluation):
+        self.latitude = latitude
+        self.longitude = longitude
+        self.name = name
+        self.distance = distance
+        self.evaluation = evaluation

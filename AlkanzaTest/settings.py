@@ -119,7 +119,7 @@ USE_L10N = True
 USE_TZ = True
 
 # Google api key
-GOOGLE_API_KEY = 'AIzaSyAMoqOZ6XnsS4nyY5wppef2dNK37TRE2cE'
+GOOGLE_API_KEY = 'AIzaSyA5kPd6Fg80h7ork48MOVC2JHI8_CA9lU0'
 
 
 # Static files (CSS, JavaScript, Images)

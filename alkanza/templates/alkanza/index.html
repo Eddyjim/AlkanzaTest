@@ -8,9 +8,18 @@
     {% endfor %}
     </select>
   </div>
-
-    </br>
-  <div id=map></div>
+  </br>
+  <div>
+    <span>
+      <div id=map></div>
+    </span>
+      <span>
+        <div>
+            Unbalance coeficient:
+          <input type="text" id="coeficient" name="coeficient"  disabled/>
+        </div>
+    </span>
+  <div>
   <br>
   <div>
     <span>Radius: </span>
@@ -18,8 +27,5 @@
   </div>
   <br>
   <button id="evaluate" type="button" >Evaluate</button>
-  {%csrf_token%}
-<script>
-var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
-</script>
+
 {%endblock%}

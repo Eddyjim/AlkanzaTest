@@ -1,6 +1,7 @@
 $(function(){
 
   var loc;
+  var map;
 
   if(navigator.geolocation){
     navigator.geolocation.getCurrentPosition(getCords,getError);
@@ -30,16 +31,17 @@ $(function(){
       mapTypeId: google.maps.MapTypeId.ROADMAP
     }
 
-    var map = new google.maps.Map($('#map').get(0),mapSettings);
+    map = new google.maps.Map($('#map').get(0),mapSettings);
 
     google.maps.event.addListenerOnce(map,'click', function(event) {
-      addMarker(event.latLng, map);
+      loc = event.latLng;
+      addMarker(event.latLng, map,'https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png');
     });
   }
 
-  function addMarker(location, map) {
-    loc = location;
+  function addMarker(location, map, icon) {
     var marker = new google.maps.Marker({
+      icon: icon,
       position: location,
       map: map,
       draggable: true
@@ -51,11 +53,33 @@ $(function(){
   }
 
   function getDistance(pointA, pointB){
-    return google.maps.geometry.spherical.computeDistanceBetween(pointA,pointB);
+    return google.maps.geometry.spherical.computeDistanceBetween(pointA , pointB);;
   }
 
   $("#evaluate").on('click',function(){
-    alert(loc.lat());
+    $.ajaxSetup({
+     beforeSend: function(xhr, settings) {
+         function getCookie(name) {
+             var cookieValue = null;
+             if (document.cookie && document.cookie != '') {
+                 var cookies = document.cookie.split(';');
+                 for (var i = 0; i < cookies.length; i++) {
+                     var cookie = jQuery.trim(cookies[i]);
+                     // Does this cookie string begin with the name we want?
+                     if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                         break;
+                     }
+                 }
+             }
+             return cookieValue;
+         }
+         if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+             // Only send the token to relative URLs i.e. locally.
+             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+         }
+     }
+    });
     $.ajax({
       type: 'POST',
       url: 'evaluate',
@@ -64,14 +88,79 @@ $(function(){
         longitude: loc.lng(),
         radius: $("#radius").val()
       },success: function(response){
-        alert(response);
+        var json = "[";
+        $.each(response, function(i, obj) {
+
+          var pointTmp = new google.maps.LatLng(obj.lat,obj.lng);
+          addMarker(pointTmp,map, obj.icon);
+          var distance = getDistance(loc, pointTmp);
+
+          json += '{ lat : '+ obj.lat + " , ";
+          json += 'lng : '+ obj.lng + " , ";
+          json += "name : " + obj.name + " , ";
+          json += 'distance : ' + distance +" },"
+        });
+        json = json.substring(0, json.length-1);
+        json += "]";
+
+        console.log(json);
+        var points = JSON.parse('[{"lat" : "45" , "lng" : "45", "name" : "test", "distance": 4},{"lat" : 85 , "lng" : 25, "name" : "test", "distance": 6}]')<
+        //var points = JSON.parse(json);
+        console.log(points);
+
+        calculate (loc,points);
+
       }, error: function(response){
         alert("Something went wrong!: "+response["status"]);
       }
     });
   });
 
-/*
+  function calculate(pivot, points){
+
+    $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+        function getCookie(name) {
+             var cookieValue = null;
+             if (document.cookie && document.cookie != '') {
+                 var cookies = document.cookie.split(';');
+                 for (var i = 0; i < cookies.length; i++) {
+                     var cookie = jQuery.trim(cookies[i]);
+                     // Does this cookie string begin with the name we want?
+                     if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                         break;
+                     }
+                 }
+             }
+             return cookieValue;
+         }
+         if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+             // Only send the token to relative URLs i.e. locally.
+             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+         }
+       }
+    });
+    $.ajax({
+      type: 'POST',
+      url: 'calculate',
+      data:{
+        pivot: {
+          lat: loc.lat(),
+          lng: loc.lng()
+        },
+        radius: $("#radius").val(),
+          points: points
+      },
+      success: function(response){
+        $("#coeficient").val() = response.cofeficient;
+      }, error: function(response){
+        alert("Something went wrong!: "+response["status"]);
+      }
+    });
+  }
+
+  /*
 var marker;
 var pointByID = {};
   $(document).ready(function () {
