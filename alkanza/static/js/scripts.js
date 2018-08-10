@@ -95,16 +95,16 @@ $(function(){
           addMarker(pointTmp,map, obj.icon);
           var distance = getDistance(loc, pointTmp);
 
-          json += '{ "lat" : '+ obj.lat + " , ";
-          json += ' "lng" : '+ obj.lng + " , ";
-          json += '"name" : ""' + obj.name + '" , ';
-          json += '"distance" : ' + distance +" },"
+          json += '{"lat" : '+ obj.lat + " , ";
+          json += '"lng" : '+ obj.lng + " , ";
+          json += '"name" : "' + obj.name + '" , ';
+          json += '"distance" : "' + distance +'" },'
         });
         json = json.substring(0, json.length-1);
         json += "]";
 
         if(json == ']'){
-          json = '[{"lat" : 45 , "lng" : 45, "name" : "test", "distance": 4},{"lat" : 85 , "lng" : 25, "name" : "test", "distance": 6}]';
+          json = '[{"lat" : -45.45964 , "lng" : -45.7894654, "name" : "test", "distance": 4,284},{"lat" : 85.7894 , "lng" : 25.87461, "name" : "test", "distance": 6.8784}]';
         }
 
 
