@@ -98,16 +98,14 @@ $(function(){
           json += '{"lat" : '+ obj.lat + " , ";
           json += '"lng" : '+ obj.lng + " , ";
           json += '"name" : "' + obj.name + '" , ';
-          json += '"distance" : "' + distance +'" },'
+          json += '"distance" : ' + distance +' },'
         });
         json = json.substring(0, json.length-1);
         json += "]";
 
         if(json == ']'){
-          json = '[{"lat" : -45.45964 , "lng" : -45.7894654, "name" : "test", "distance": 4,284},{"lat" : 85.7894 , "lng" : 25.87461, "name" : "test", "distance": 6.8784}]';
+          json = '[{"lat" : -45.45964 , "lng" : -45.7894654, "name" : "test", "distance": 4.284},{"lat" : -45.45964 , "lng" : -45.7894654, "name" : "test", "distance": 12.284},{"lat" : 85.7894 , "lng" : 25.87461, "name" : "test", "distance": 6.8784}]';
         }
-
-
         console.log(json);
         //var points = JSON.parse('');
         var points = JSON.parse(json);

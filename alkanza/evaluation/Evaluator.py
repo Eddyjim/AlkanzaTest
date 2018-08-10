@@ -36,27 +36,32 @@ def calculateCoeficient(distances):
     # f [x] = x
     # f(x:xs) = |x-y|
     # f(x:xs:y) = minimumx( | f(x) - f(xs:z) | , | f(xs) - f(x:z) | , | f(x) + f(xs) + f(z) | )
-    laux = []
 
-    print (distances)
+    laux = []
 
     if len(distances) == 1:
         coeficient = distances[0]
     elif len(distances) == 2:
         coeficient = abs(distances[0]-distances[1])
     else:
-        tempSum = 0
+        temp = 0
+        counter = 0
         for i in distances:
+            ci = 0
             ls = []
-            if len(laux) == 0:
-                ls.append(i)
-            elif distances.index(i) > 1:
+            if counter == 1:
+                ls.append(abs(distances[0]-distances[1]))
+                print('valor: '+str(ls[0]))
+            else:
                 for j in laux:
                     ls.append(j+i)
                     ls.append(abs(j-i))
-                    ls.append(abs(temp-i))
 
-            laux = ls
-            tempSum = tempSum+i
-            coeficient = min(laux)
+            ls.append(abs(temp-i))
+
+        laux = ls
+        temp = temp+i
+        ++counter
+
+    coeficient = min(laux)
     return coeficient
